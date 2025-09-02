@@ -26,6 +26,8 @@ bld/
 [Vv]17/
 [Pp]roject[Ee]valuation/
 [Dd]esign[Tt]ime[Bb]uild
+[Cc]opilot[Ii]ndices/
+
 
 # .NET Core
 project.lock.json
