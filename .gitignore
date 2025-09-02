@@ -22,6 +22,10 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
+[Ff]ile[Cc]ontent[Ii]ndex/
+[Vv]17/
+[Pp]roject[Ee]valuation/
+[Dd]esign[Tt]ime[Bb]uild
 
 # .NET Core
 project.lock.json
