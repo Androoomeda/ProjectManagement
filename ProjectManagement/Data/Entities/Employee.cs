@@ -46,7 +46,7 @@
 		/// <summary>
 		/// Projects associated with the employee.
 		/// </summary>
-		public ICollection<Employee> ProjectEmployees { get; set; }
+		public ICollection<ProjectEmployee> ProjectEmployees { get; set; }
 
 		/// <summary>
 		/// Tasks authored by the employee.

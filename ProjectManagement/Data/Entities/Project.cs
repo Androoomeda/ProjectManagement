@@ -62,7 +62,7 @@
 		/// <summary>
 		/// Collection of employees working on the project.
 		/// </summary>
-		public ICollection<Employee> ProjectEmployees { get; set; }
+		public ICollection<ProjectEmployee> ProjectEmployees { get; set; }
 
 		/// <summary>
 		/// Collection of tasks associated with the project.

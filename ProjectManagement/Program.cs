@@ -1,6 +1,9 @@
 namespace ProjectManagement
 {
-    public class Program
+	using ProjectManagement.Data;
+
+
+	public class Program
     {
         public static void Main(string[] args)
         {
@@ -9,6 +12,9 @@ namespace ProjectManagement
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            builder.Services.AddSqlServer<ProjectManagementContext>(connectionString);
 
             var app = builder.Build();
 
