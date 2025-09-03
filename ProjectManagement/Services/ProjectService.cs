@@ -2,7 +2,9 @@
 {
 	using Microsoft.EntityFrameworkCore;
 	using ProjectManagement.Data;
+	using ProjectManagement.Data.Dtos;
 	using ProjectManagement.Data.Entities;
+	using ProjectManagement.Data.Mapping;
 
 	/// <summary>
 	/// Service to manage operations related to <see cref="Project"/>.
@@ -27,7 +29,7 @@
 		/// <param name="endDate">Filter for <see cref="Project"/> end date.</param>
 		/// <param name="priority">Filter for <see cref="Project"/> priority.</param>
 		/// <returns>List of <see cref="Project"/> matching the filtering.</returns>
-		public async Task<List<Project>> GetProjectsAsync(DateTime? startDate, DateTime? endDate, int? priority)
+		public async Task<List<ProjectDto>> GetProjectsDtosAsync(DateTime? startDate, DateTime? endDate, int? priority)
 		{
 			var query = _context.Projects.AsQueryable();
 
@@ -38,7 +40,14 @@
 			if (priority.HasValue)
 				query = query.Where(p => p.Priority == priority.Value);
 
-			return await query.ToListAsync();
+			var projects = await query
+				.Include(p => p.ProjectManager)
+				.Include(p => p.ProjectEmployees)
+					.ThenInclude(pe => pe.Employee)
+				.Select(p => p.ToDto())
+				.ToListAsync();
+
+			return projects;
 		}
 
 		/// <summary>
@@ -46,7 +55,15 @@
 		/// </summary>
 		/// <param name="id"><see cref="Project"/> identifier.</param>
 		/// <returns>The <see cref="Project"/> entity.</returns>
-		public async Task<Project?> GetProjectByIdAsync(int id) => await _context.Projects.FindAsync(id);
+		public async Task<ProjectDto?> GetProjectDtoByIdAsync(int id)
+		{
+			var project = await _context.Projects.FindAsync(id);
+
+			if (project != null)
+				return project.ToDto();
+
+			return null;
+		}
 
 		/// <summary>
 		/// Creates a new <see cref="Project"/> in the database.
@@ -62,12 +79,21 @@
 		/// <summary>
 		/// Updates an existing <see cref="Project"/> in the database.
 		/// </summary>
-		/// <param name="project"> <see cref="Project"/> entity with updated values. </param>
+		/// <param name="id"> <see cref="Project"/> identifier.</param>
+		/// <param name="project"> <see cref="ProjectUpdateDto"/> with updated values. </param>
 		/// <returns>A task representing the asynchronous operation.</returns>
-		public async Task UpdateProjectAsync(Project project)
+		public async Task UpdateProjectAsync(int id, ProjectUpdateDto projectUpdateDto)
 		{
-			_context.Projects.Update(project);
-			await _context.SaveChangesAsync();
+			var project = await _context.Projects.FindAsync(id);
+
+			if(project != null)
+			{
+				_context.Entry(project)
+					.CurrentValues
+					.SetValues(projectUpdateDto.ToEntity(id));
+
+				await _context.SaveChangesAsync();
+			}
 		}
 
 		/// <summary>

@@ -81,10 +81,11 @@
 		{
 			var projectTask = await _context.ProjectTasks.FindAsync(id);
 
-			if(projectTask != null)
+			if (projectTask != null)
 			{
 				_context.ProjectTasks.Remove(projectTask);
 				await _context.SaveChangesAsync();
-			}		
+			}
+		}
 	}
 }
