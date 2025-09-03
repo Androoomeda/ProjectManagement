@@ -1,7 +1,7 @@
 namespace ProjectManagement
 {
 	using ProjectManagement.Data;
-
+	using ProjectManagement.Services;
 
 	public class Program
     {
@@ -12,6 +12,7 @@ namespace ProjectManagement
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddScoped<ProjectService>();
 
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddSqlServer<ProjectManagementContext>(connectionString);
@@ -27,7 +28,6 @@ namespace ProjectManagement
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
