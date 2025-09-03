@@ -45,15 +45,12 @@
 		/// </summary>
 		/// <param name="id"><see cref="Employee"/> identifier.</param>
 		/// <returns><see cref="Employee"/> entity.</returns>
-		public async Task<Employee?> GetEmployeeByIdAsync(int id)
-		{
-			return await _context.Employees.FindAsync(id);
-		}
+		public async Task<Employee?> GetEmployeeByIdAsync(int id) => await _context.Employees.FindAsync(id);
 
 		/// <summary>
-		/// Adds a new <see cref="Employee"/> to the database.
+		/// Creates a new <see cref="Employee"/> in the database.
 		/// </summary>
-		/// <param name="employee"><see cref="Employee"/> entity to add.</param>
+		/// <param name="employee"><see cref="Employee"/> entity to create.</param>
 		/// <returns>A task representing the asynchronous operation.</returns>
 		public async Task CreateEmployeeAsync(Employee employee)
 		{
@@ -73,7 +70,7 @@
 		}
 
 		/// <summary>
-		/// Deletes a <see cref="Employee"/> by id.
+		/// Deletes a <see cref="Employee"/> from database by id.
 		/// </summary>
 		/// <param name="id"><see cref="Employee"/> identifier.</param>
 		/// <returns>A task representing the asynchronous operation.</returns>

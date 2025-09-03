@@ -24,6 +24,7 @@ namespace ProjectManagement
 
             builder.Services.AddScoped<ProjectService>();
             builder.Services.AddScoped<EmployeeService>();
+            builder.Services.AddScoped<ProjectTaskService>();
 
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddSqlServer<ProjectManagementContext>(connectionString);

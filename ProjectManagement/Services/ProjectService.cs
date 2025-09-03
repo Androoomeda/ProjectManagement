@@ -44,17 +44,14 @@
 		/// <summary>
 		/// Gets a <see cref="Project"/> by id.
 		/// </summary>
-		/// <param name="id"><see cref="Project"/> identifier</param>
+		/// <param name="id"><see cref="Project"/> identifier.</param>
 		/// <returns>The <see cref="Project"/> entity.</returns>
-		public async Task<Project?> GetProjectByIdAsync(int id)
-		{
-			return await _context.Projects.FindAsync(id);
-		}
+		public async Task<Project?> GetProjectByIdAsync(int id) => await _context.Projects.FindAsync(id);
 
 		/// <summary>
-		/// Adds a new <see cref="Project"/> to the database.
+		/// Creates a new <see cref="Project"/> in the database.
 		/// </summary>
-		/// <param name="project"><see cref="Project"/> entity to add.</param>
+		/// <param name="project"><see cref="Project"/> entity to create.</param>
 		/// <returns>A task representing the asynchronous operation.</returns>
 		public async Task CreateProjectAsync(Project project)
 		{
@@ -74,7 +71,7 @@
 		}
 
 		/// <summary>
-		/// Deletes a <see cref="Project"/> by id.
+		/// Deletes a <see cref="Project"/> from database by id.
 		/// </summary>
 		/// <param name="id"> <see cref="Project"/> identifier. </param>
 		/// <returns>A task representing the asynchronous operation.</returns>
