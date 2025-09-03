@@ -5,7 +5,7 @@
 	using ProjectManagement.Data.Entities;
 
 	/// <summary>
-	/// Service to manage operations related to projects.
+	/// Service to manage operations related to <see cref="Project"/>.
 	/// </summary>
 	public class ProjectService
 	{
@@ -46,7 +46,7 @@
 		/// </summary>
 		/// <param name="id"><see cref="Project"/> identifier</param>
 		/// <returns>The <see cref="Project"/> entity.</returns>
-		public async Task<Project> GetProjectByIdAsync(int id)
+		public async Task<Project?> GetProjectByIdAsync(int id)
 		{
 			return await _context.Projects.FindAsync(id);
 		}
@@ -55,7 +55,7 @@
 		/// Adds a new <see cref="Project"/> to the database.
 		/// </summary>
 		/// <param name="project"><see cref="Project"/> entity to add.</param>
-		/// <returns></returns>
+		/// <returns>A task representing the asynchronous operation.</returns>
 		public async Task CreateProjectAsync(Project project)
 		{
 			_context.Projects.Add(project);
@@ -66,7 +66,7 @@
 		/// Updates an existing <see cref="Project"/> in the database.
 		/// </summary>
 		/// <param name="project"> <see cref="Project"/> entity with updated values. </param>
-		/// <returns></returns>
+		/// <returns>A task representing the asynchronous operation.</returns>
 		public async Task UpdateProjectAsync(Project project)
 		{
 			_context.Projects.Update(project);
@@ -77,7 +77,7 @@
 		/// Deletes a <see cref="Project"/> by id.
 		/// </summary>
 		/// <param name="id"> <see cref="Project"/> identifier. </param>
-		/// <returns></returns>
+		/// <returns>A task representing the asynchronous operation.</returns>
 		public async Task DeleteProjectAsync(int id)
 		{
 			var project = await _context.Projects.FindAsync(id);
