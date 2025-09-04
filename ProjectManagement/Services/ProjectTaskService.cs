@@ -2,7 +2,9 @@
 {
 	using Microsoft.EntityFrameworkCore;
 	using ProjectManagement.Data;
+	using ProjectManagement.Data.Dtos;
 	using ProjectManagement.Data.Entities;
+	using ProjectManagement.Data.Mapping;
 
 
 	/// <summary>
@@ -64,12 +66,21 @@
 		/// <summary>
 		/// Updates an existing <see cref="ProjectTask"/> in the database.
 		/// </summary>
+		/// <param name="id"> <see cref="ProjectTask"/> identifier.</param>
 		/// <param name="projectTask"><see cref="ProjectTask"/> entity with updated values.</param>
 		/// <returns>A task representing the asynchronous operation.</returns>
-		public async Task UpdateTaskAsync(ProjectTask projectTask)
+		public async Task UpdateTaskAsync(int id, TaskCreateUpdateDto taskUpdateDto)
 		{
-			_context.ProjectTasks.Update(projectTask);
-			await _context.SaveChangesAsync();
+			var projectTask = await _context.Projects.FindAsync(id);
+
+			if (projectTask != null)
+			{
+				_context.Entry(projectTask)
+					.CurrentValues
+					.SetValues(taskUpdateDto.ToEntity());
+
+				await _context.SaveChangesAsync();
+			}
 		}
 
 		/// <summary>

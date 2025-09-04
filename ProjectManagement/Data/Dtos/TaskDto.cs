@@ -12,9 +12,9 @@
 	/// <param name="Assignee">Employee assigned to execute the task.</param>
 	/// <param name="Author">Employee who created the task.</param>
 	/// <param name="Project">The project to which this task belongs.</param>
-	public record class ProjectTaskDto
+	public record class TaskDto
 	(
-		 int TaskId,
+		int TaskId,
 		string TaskName,
 		ProjectTaskStatus Status,
 		int Priority,

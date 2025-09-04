@@ -38,8 +38,7 @@
 		{
 			var projectDtos = await _projectService.GetProjectsDtosAsync(startDate, endDate, priority);
 
-			if (projectDtos.Count == 0)
-				return NotFound();
+			if (projectDtos.Count == 0) return NotFound();
 
 			return Ok(projectDtos);
 		}
