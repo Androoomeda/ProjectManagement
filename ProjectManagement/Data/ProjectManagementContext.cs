@@ -3,17 +3,42 @@
 	using Microsoft.EntityFrameworkCore;
 	using ProjectManagement.Data.Entities;
 
+	/// <summary>
+	/// Represents the <see cref="ProjectManagementContext"/> for project management.
+	/// Configures the entity relationships and keys.
+	/// </summary>
 	public class ProjectManagementContext(DbContextOptions<ProjectManagementContext> options) : DbContext(options)
 	{
+		/// <summary>
+		/// Gets or sets the collection of <see cref="Employee"/> entities in the context.
+		/// </summary>
 		public DbSet<Employee> Employees => Set<Employee>();
+
+		/// <summary>
+		/// Gets or sets the collection of <see cref="Project"/> entities in the context.
+		/// </summary>
 		public DbSet<Project> Projects => Set<Project>();
+
+		/// <summary>
+		/// Gets or sets the collection of <see cref="ProjectTask"/> entities in the context.
+		/// </summary>
 		public DbSet<ProjectTask> ProjectTasks => Set<ProjectTask>();
+
+		/// <summary>
+		/// Gets or sets the collection of <see cref="ProjectEmployee"/> entities in the context.
+		/// <see cref="ProjectEmployee"/> represents the association between projects and employees,
+		/// linking which employees are assigned to which projects.
+		/// </summary>
 		public DbSet<ProjectEmployee> ProjectEmployees => Set<ProjectEmployee>();
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<ProjectEmployee>()
-				.HasKey(pe => new { pe.ProjectId, pe.EmployeeId });
+				.HasKey(pe => pe.Id);
+
+			modelBuilder.Entity<ProjectEmployee>()
+				.Property(pe => pe.Id)
+				.ValueGeneratedOnAdd();
 
 			modelBuilder.Entity<ProjectEmployee>()
 				.HasOne(pe => pe.Project)

@@ -2,7 +2,9 @@
 {
 	using Microsoft.EntityFrameworkCore;
 	using ProjectManagement.Data;
+	using ProjectManagement.Data.Dtos;
 	using ProjectManagement.Data.Entities;
+	using ProjectManagement.Data.Mapping;
 
 	/// <summary>
 	/// Service to manage operations related to <see cref="Employee"/>
@@ -21,11 +23,11 @@
 		public EmployeeService(ProjectManagementContext context) => _context = context;
 
 		/// <summary>
-		/// Gets list of <see cref="Employee"/>.
+		/// Gets list of <see cref="EmployeeDto"/>.
 		/// </summary>
-		/// <param name="search"></param>
-		/// <returns>List of <see cref="Employee"/></returns>
-		public async Task<List<Employee>> GetEmployeesAsync(string? search = null)
+		/// <param name="search">Optional search string.</param>
+		/// <returns>List of <see cref="EmployeeDto"/></returns>
+		public async Task<List<EmployeeDto>> GetEmployeesAsync(string? search = null)
 		{
 			var query = _context.Employees.AsQueryable();
 
@@ -37,15 +39,23 @@
 					e.MiddleName.Contains(search));
 			}
 
-			return await query.ToListAsync();
+			return await query.Select(e => e.ToDto()).ToListAsync();
 		}
 
 		/// <summary>
-		/// Gets a <see cref="Employee"/> by id.
+		/// Gets a <see cref="EmployeeDto"/> by id.
 		/// </summary>
 		/// <param name="id"><see cref="Employee"/> identifier.</param>
-		/// <returns><see cref="Employee"/> entity.</returns>
-		public async Task<Employee?> GetEmployeeByIdAsync(int id) => await _context.Employees.FindAsync(id);
+		/// <returns><see cref="EmployeeDto"/> entity.</returns>
+		public async Task<EmployeeDto?> GetEmployeeByIdAsync(int id)
+		{
+			var employee = await _context.Employees.FindAsync(id);
+
+			if (employee != null)
+				return employee.ToDto();
+
+			return null;
+		}
 
 		/// <summary>
 		/// Creates a new <see cref="Employee"/> in the database.
@@ -61,11 +71,22 @@
 		/// <summary>
 		/// Updates an existing <see cref="Employee"/> in the database.
 		/// </summary>
-		/// <param name="employee"><see cref="Employee"/> entity with updated values. </param>
+		/// <param name="id"> <see cref="Employee"/> identifier.</param>
+		/// <param name="employeeCreateDto"> <see cref="EmployeeCreateUpdateDto"/> with updated values. </param>
 		/// <returns>A task representing the asynchronous operation.</returns>
-		public async Task UpdateEmployeeAsync(Employee employee)
+		public async Task UpdateEmployeeAsync(int id, EmployeeCreateUpdateDto employeeCreateDto)
 		{
-			_context.Employees.Update(employee);
+			var employee = await _context.Projects.FindAsync(id);
+
+			if (employee != null)
+			{
+				_context.Entry(employee)
+					.CurrentValues
+					.SetValues(employeeCreateDto.ToEntity());
+
+				await _context.SaveChangesAsync();
+			}
+
 			await _context.SaveChangesAsync();
 		}
 
