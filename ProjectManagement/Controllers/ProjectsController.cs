@@ -82,18 +82,18 @@
 		/// Update an existing <see cref="Project"/> by id.
 		/// </summary>
 		/// <param name="id"><see cref="Project"/> identifier.</param>
-		/// <param name="projectUpdate">Updated <see cref="ProjectUpdateDto"/> data.</param>
+		/// <param name="projectUpdateDto">Updated <see cref="ProjectUpdateDto"/> data.</param>
 		/// <returns>No content on success or bad request.</returns>
 		[HttpPut("{id}")]
 		[ProducesResponseType(StatusCodes.Status204NoContent)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<IActionResult> UpdateProject(int id, [FromBody] ProjectUpdateDto projectUpdate)
+		public async Task<IActionResult> UpdateProject(int id, [FromBody] ProjectUpdateDto projectUpdateDto)
 		{
 			var project = await _projectService.GetProjectDtoByIdAsync(id);
 
 			if (project == null) return NotFound();
 
-			await _projectService.UpdateProjectAsync(id, projectUpdate);
+			await _projectService.UpdateProjectAsync(id, projectUpdateDto);
 
 			return NoContent();
 		}

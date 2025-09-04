@@ -24,5 +24,22 @@
 				employee.Role
 			);
 		}
+
+		/// <summary>
+		/// Converts a <see cref="EmployeeCreateUpdateDto"/> to a new <see cref="Employee"/> entity.
+		/// </summary>
+		/// <param name="employeeCreateDto">The <see cref="EmployeeCreateUpdateDto"/> containing data for creating a new <see cref="Employee"/>.</param>
+		/// <returns>A new <see cref="Employee"/> entity populated with the DTO's data.</returns>
+		public static Employee ToEntity(this EmployeeCreateUpdateDto employeeCreateDto)
+		{
+			return new Employee
+			{
+				FirstName = employeeCreateDto.FirstName,
+				LastName = employeeCreateDto.LastName,
+				MiddleName = employeeCreateDto.MiddleName,
+				Email = employeeCreateDto.Email,
+				Role = employeeCreateDto.Role
+			};
+		}
 	}
 }
